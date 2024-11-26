@@ -1,4 +1,5 @@
 ---
+title: Public Key Infrastructure
 ---
 # Prerequisites
 
@@ -208,3 +209,31 @@ $ openssl \
     -notext \
     -out x365-intermediate-1/certs/x365-intermediate-1.crt
 ```
+
+# Create X365 User Certificate
+
+Generate the CSR appropriately, place it in x365-intermediate-1/csr/XXX.csr.
+
+Sign the CSR with the intermediate certificate:
+
+```bash
+$ openssl \
+    ca \
+    -batch \
+    -config x365-intermediate-1/openssl.cnf \
+    -extensions usr_cert \
+    -days 3650 \
+    -engine pkcs11 \
+    -keyform engine \
+    -keyfile slot_0-id_03 \
+    -in x365-intermediate-1/csr/XXX.csr \
+    -notext \
+    -out x365-intermediate-1/certs/XXX.crt
+```
+
+# References
+
+* [OpenSSL Certificate Authority](https://jamielinux.com/docs/openssl-certificate-authority/)
+* [Creating a Two-Tier CA using Yubikeys](https://www.thecrosseroads.net/2022/06/creating-a-two-tier-ca-using-yubikeys/)
+* [YubiKey PIV Manager](https://developers.yubico.com/yubico-piv-tool/)
+
